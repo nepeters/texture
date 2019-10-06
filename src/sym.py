@@ -107,7 +107,7 @@ def __rot_nrot_001__(h, csym=None):
     if   csym=='hexag': nrot=6
     elif csym=='trigo': nrot=3
     elif csym=='tetra': nrot=4
-    else: print 'Unexpected Error'; raise IOError
+    else: print('Unexpected Error'); raise IOError
 
     cos = np.cos; sin = np.sin; pi = np.pi
     hx = np.zeros((nrot-1,3,3))
@@ -200,7 +200,8 @@ def cubic():
     # trim the values.
     for i in range(len(H)):
         H[i] = __trim0__(h=H[i])
-    return H    
+
+    return H   
 
 def cubic_centro():
     h_old = cubic()

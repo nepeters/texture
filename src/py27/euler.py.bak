@@ -1,6 +1,29 @@
 import numpy as np
 import math
 
+def in_plane_rot(th):
+    """
+    Return an in-plane rotation matrix
+    | cos(th)   -sin(th)   0 |
+    | sin(th)    cos(th)   0 |
+    | 0          0         1 |
+
+    Argument
+    --------
+    th  (rotation angle in degree)
+    """
+    th = th * math.pi / 180.
+
+    sth = math.sin(th)
+    cth = math.cos(th)
+    rot = np.zeros((3,3))
+    rot[0,0] =  cth
+    rot[0,1] = -sth
+    rot[1,0] =  sth
+    rot[1,1] =  cth
+    rot[2,2] =  1.
+    return rot
+
 def euler(ph=None, th=None, tm=None, a=None, echo=True):
     """
     note:
@@ -15,7 +38,7 @@ def euler(ph=None, th=None, tm=None, a=None, echo=True):
           Thanks to python's non-hardwirable-arugment feature,
           if a matrix is not given, it automatically calculates
           the matrix with given angles.
-          Vice versa, if matrix is given, given angle aurgments 
+          Vice versa, if matrix is given, given angle aurgments
           are ignored and new euler angles are returned.
 
     Nomenclature of Euler angle follows Bunge's.
@@ -23,33 +46,23 @@ def euler(ph=None, th=None, tm=None, a=None, echo=True):
           th = phi
           tm = phi2
     """
-    if a==None:  a=np.resize(np.array(()),(3,3));iopt=2
+    if type(a).__name__=='NoneType':  a=np.resize(np.array(()),(3,3));iopt=2
     else:
-        if type(a).__name__=='ndarray': 
+        if type(a).__name__=='ndarray':
             iopt = 1
             pass
-        else: 
-            print('Error: Unexpected Matrix a type')
-            print('It should be numpy.ndarry!')
+        else:
+            print 'Error: Unexpected Matrix a type'
+            print 'It should be numpy.ndarry!'
             raise IOError
 
     if iopt==1 :
-        if abs(abs(a[2,2])-1.0)==0.e0 or abs(abs(a[2,2])-1.0)<1.e-6:
-            th = math.acos(1.)
-        else:
-            try: th = math.acos(a[2,2])  #Radian
-            except:
-                print('a[2,2] = %e'%a[2,2])
-                print('a[2,2] - 1.0: ', (a[2,2] - 1.0))
-                print('if a[2,2]-1.0 < 0.e-5', a[2,2]-1.0<0.e-5)
-                raise IOError
-
-        if abs(a[2,2] > 0.99999): 
+        th = math.acos(a[2,2])  #Radian
+        if abs(a[2,2] > 0.99999):
             tm = 0.
             ph = math.atan2(a[0,1],a[0,0]) #Radian
         else:
             sth = math.sin(th)
-            if sth==0: sth=0.000000001
             tm = math.atan2(a[0,2]/sth,a[1,2]/sth)
             ph = math.atan2(a[2,0]/sth,-a[2,1]/sth)
         th = th * 180./math.pi
@@ -60,13 +73,13 @@ def euler(ph=None, th=None, tm=None, a=None, echo=True):
     elif (iopt == 2):
         angles = [ph,th,tm]
         if any(angles[i] == None for i in range(len(angles))):
-            print('Angles must be give if iopt==2')
+            print 'Angles must be give if iopt==2'
             raise IOError
 
         """ Convert the angle into Radian"""
         ph = ph * math.pi / 180.
         th = th * math.pi / 180.
-        tm = tm * math.pi / 180.    
+        tm = tm * math.pi / 180.
 
         sph = math.sin(ph)
         cph = math.cos(ph)
@@ -86,10 +99,8 @@ def euler(ph=None, th=None, tm=None, a=None, echo=True):
         a[2,2] =  cth
 
         if echo==True:
-            print('Matrix a is ')
-            print(a)
+            print 'Matrix a is '
+            print a
         return a
 
-    else: print('Error: Improper iopt input'); raise IOError
-
-    
+    else: print 'Error: Improper iopt input'; raise IOError

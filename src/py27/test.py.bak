@@ -1,10 +1,9 @@
 ## test..
 import MP.lib.whichcomp
-import importlib
 path_to_vpsc = MP.lib.whichcomp.find_vpsc_repo()
 
 def test1():
-    from . import upf;importlib.reload(upf)
+    import upf;reload(upf)
     import matplotlib.pyplot as plt
     import os
 

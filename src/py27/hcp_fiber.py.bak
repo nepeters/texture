@@ -30,15 +30,15 @@ Ref #2 Communication with Dr. Dirk Steglich Oct 30, 2015
 
 import numpy as np
 import random, upf
-from .euler import euler
+from euler import euler
 gauss = random.gauss
 expov = random.expovariate
 logno = random.lognormvariate
 norma = random.normalvariate
-from .sym import __mmm__ as mmm
-from .bcc_rolling_fiber import gen_gr_fiber,\
+from sym import __mmm__ as mmm
+from bcc_rolling_fiber import gen_gr_fiber,\
     nd_rot, rd_rot, td_rot, rot_vectang
-from .text import miller2mat, miller2mat_RT
+from text import miller2mat, miller2mat_RT
 
 def basal_fib(iopt=0):
     """
@@ -100,13 +100,13 @@ def main(ngrains=100,sigma=15.,c2a=1.6235,mu=0.,
     else:
         h=np.array([np.identity(3)])
     gr = []
-    for i in range(ngrains):
+    for i in xrange(ngrains):
         dth = random.uniform(-180., 180.)
         if prc=='cst':   g = gen_gr_fiber(th=dth,sigma=sigma,mu=mu,tilt=tilt_1,iopt=0) # Basal//ND
         elif prc=='ext': g = gen_gr_fiber(th=dth,sigma=sigma,mu=mu,tilt=tilt_1,iopt=1)  # Basal//ED
         else:
-            raise IOError('Unexpected option')
-        for j in range(len(h)):
+            raise IOError, 'Unexpected option'
+        for j in xrange(len(h)):
             temp = np.dot(g,h[j].T)
 
             ## tilts_about_ax1
@@ -118,7 +118,7 @@ def main(ngrains=100,sigma=15.,c2a=1.6235,mu=0.,
                 g_tilt = td_rot(tilts_about_ax2)
                 temp = np.dot(temp,g_tilt.T)
             elif abs(tilts_about_ax2)>0 and abs(tilts_about_ax2)>0:
-                raise IOError('One tilt at a time is allowed.')
+                raise IOError, 'One tilt at a time is allowed.'
 
             phi1,phi,phi2 = euler(a=temp, echo=False)
             gr.append([phi1,phi,phi2,1./ngrains])
@@ -138,7 +138,7 @@ def gen_file(lab='',ngr=None):
 
 def write_gr(f,gr):
     f.write('B %i\n'%len(gr))
-    for i in range(len(gr)):
+    for i in xrange(len(gr)):
         f.writelines('%9.3f %9.3f %9.3f %13.4e\n'%(
             gr[i][0],gr[i][1],gr[i][2],gr[i][3]))
     f.close()
@@ -184,7 +184,7 @@ def app(ngr=100,c2a=1.6235):
     gr2=main(mu=0,ngrains=ngr/2,tilts_about_ax1=-30.,sigma=45)
     plt.gcf().clf()
     grs =[]
-    for i in range(len(gr1)):
+    for i in xrange(len(gr1)):
         grs.append(gr1[i])
         grs.append(gr2[i])
     grs=np.array(grs)
@@ -200,7 +200,7 @@ def app(ngr=100,c2a=1.6235):
     gr2=main(mu=0,ngrains=ngr/2,tilts_about_ax1=-50.,sigma=45)
     plt.gcf().clf()
     gr =[]
-    for i in range(len(gr1)):
+    for i in xrange(len(gr1)):
         gr.append(gr1[i])
         gr.append(gr2[i])
     gr=np.array(gr)
