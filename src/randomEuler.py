@@ -23,47 +23,47 @@ class randomEuler:
     """
     def __init__(self, d_ang=10., p1=360., p2=90., ngrain = None, echo=True):
         temp = []
-	if ngrain==None: 
+        if ngrain==None: 
             if d_ang==None: dang = 10.
-	    else: dang = d_ang
+            else: dang = d_ang
         elif ngrain==100: dang = 26.5
         elif ngrain==200: dang = 21.140625
         elif ngrain==300: dang = 18.35
-	elif ngrain==500:  dang = 15.5
-	elif ngrain==1000: dang = 12.3
-	elif ngrain==2000: dang = 9.753
-	elif ngrain==3000: dang = 8.525
-	elif ngrain==4000: dang = 7.742
-	elif ngrain==5000: dang = 7.187
-	elif ngrain==6000: dang = 6.765
-	elif ngrain==7000: dang = 6.425
-	elif ngrain==8000: dang = 6.146
-	elif ngrain==9000: dang = 5.908
-	elif ngrain==10000: dang =  5.705
-	else:
+        elif ngrain==500:  dang = 15.5
+        elif ngrain==1000: dang = 12.3
+        elif ngrain==2000: dang = 9.753
+        elif ngrain==3000: dang = 8.525
+        elif ngrain==4000: dang = 7.742
+        elif ngrain==5000: dang = 7.187
+        elif ngrain==6000: dang = 6.765
+        elif ngrain==7000: dang = 6.425
+        elif ngrain==8000: dang = 6.146
+        elif ngrain==9000: dang = 5.908
+        elif ngrain==10000: dang =  5.705
+        else:
             print('Wrongly designated number of grains')
             print("## Using an optimization scheme can be beneficial")
             raise IOError
-	i = 0
+        i = 0
         while True:
             self.__initial__(d_ang=dang, p1=p1, p2=p2, echo=echo)
             if ngrain == None:  break
             else:
                 if self.ngr==ngrain:
                     temp = np.array(temp)
-		    temp.std(); temp.mean()
+                    temp.std(); temp.mean()
                     print(i,'th iteration')
-		    if i==0: pass
-		    else:
+                    if i==0: pass
+                    else:
                         print('Standard deviaition: %9.3f'%temp.std())
-			print('Mean: %9.3f'%temp.mean())
-			print('Variance: %9.3f'%temp.var())
-			print('Max Ngr : %9.3f'%temp.max())
-			print('Min Ngr : %9.3f'%temp.min())
-			#raw_input(' press enter ... >>> ')
-		    break
-		else:
-		    temp.append(self.ngr)
+                        print('Mean: %9.3f'%temp.mean())
+                        print('Variance: %9.3f'%temp.var())
+                        print('Max Ngr : %9.3f'%temp.max())
+                        print('Min Ngr : %9.3f'%temp.min())
+                        #raw_input(' press enter ... >>> ')
+                    break
+                else:
+                    temp.append(self.ngr)
             i = i + 1
                 
     def __initial__(self, d_ang = 10, p1=360, p2=90, echo=True):
@@ -78,9 +78,9 @@ class randomEuler:
         coef_ = self.coef
         istep = (p1  - 0) /   self.d_ang  #phi1
         jstep = (p2  - 0) /   self.d_ang  #phi2
-	kstep = (1.0 - 0) / (coef_*d_ang) #PHI
-	itot = 0
-	for i in range(int(istep)+3):
+        kstep = (1.0 - 0) / (coef_*d_ang) #PHI
+        itot = 0
+        for i in range(int(istep)+3):
             for j in range(int(jstep)+3):
                 for k in range(int(kstep)+3):
                     phi1=self.d_ang*i+random()*self.d_ang
@@ -91,10 +91,10 @@ class randomEuler:
                             if phi<=1:
                                 itot=itot+1
                                 self.euler.append([itot,
-                                                   phi1,
-                                                   180./pi*acos(phi),
-                                                   phi2])
-                                 #self.euler.append([itot,phi1,180./pi*acos(phi),phi,phi2])
+                                                phi1,
+                                                180./pi*acos(phi),
+                                                phi2])
+                                #self.euler.append([itot,phi1,180./pi*acos(phi),phi,phi2])
         self.ngr = itot
         if echo==True:
             print('*********************************')
@@ -106,34 +106,35 @@ class randomEuler:
     def chg_nomen(self, name):
         """
         chg_nomen is for changing the nomenclature of the Euler angle /n
-	*************************************************** /n
-	*     The initial nomenclature given is Bunge     * /n
-	*  One may change this either to 'Kocks' or 'Roe  * /n
-	*************************************************** /n
-	"""
-	print('*  the current nomenclature is', name)
-	self.nomenclature = name
+        *************************************************** /n
+        *     The initial nomenclature given is Bunge     * /n
+        *  One may change this either to 'Kocks' or 'Roe  * /n
+        *************************************************** /n
+        """
+        print('*  the current nomenclature is', name)
+        self.nomenclature = name
 
     def write(self, filename='random.tex'):
-	"""
-        write def for writing euler angles into a file 
-	in which a name is given as the argument
-        Argument:
+        """
+        write def for writing euler angles into a file
+        in which a name is given as the argument
+        Argument: 
         filename ='random.tex'
         """
-	f = open(filename, 'w')
-	header = 'Randomeuler angle writer from randomeuler.py script\n'
-	header = header + 'youngung.jeong@gmail.com'+'\n'
-	header = header + 'Materials Mechanics Laboratory, GIFT, POSTECH\n'
-	header = header + self.nomenclature[0]
-	header = header + '   '+ str(self.ngr) + '\n'
-	f.write(header)
-	for i in range(len(self.euler)):
+        f = open(filename, 'w')
+
+        header = 'Randomeuler angle writer from randomeuler.py script\n'
+        header = header + 'youngung.jeong@gmail.com'+'\n'
+        header = header + 'Materials Mechanics Laboratory, GIFT, POSTECH\n'
+        header = header + self.nomenclature[0]
+        header = header + '   '+ str(self.ngr) + '\n'
+        f.write(header)
+        for i in range(len(self.euler)):
             for j in range(len(self.euler[0])-1):
-		f.write('%8.5f '%(self.euler[i][j+1]))
-	    f.write('%8.1f\n'%(10.))
+                f.write('%8.5f '%(self.euler[i][j+1]))
+            f.write('%8.1f\n'%(10.))
         f.close()
-			
+                
     def odf_reading(self, filename_='C:\Python26\odf.txt'):
         """
         Discritized ODF output from LABOTEX, the texture analyser
@@ -143,9 +144,9 @@ class randomEuler:
         self.filename = filename_
         dummy=f.readline()
         self.data=[]
-	while True:
+        while True:
             s=f.readline()
-	    if len(s) < 5:
+            if len(s) < 5:
                 print('an EOF is reached')
                 break #EOF
             self.data.append(list(map(float,s.split())))
@@ -230,62 +231,61 @@ class randomEuler:
                 c = i
                 ind = int(a)+ int(b) + int(c)
                 value = self.data[ind][3]
-	    return value
+            return value
         return -1
     
     def combine(self, filename='example.cmb'):
         """
-	Combines the generated random file and the read ODF file.
-	Arguments
-	filename = 'example.cmb'
-	"""
-	try:
-	    self.data[0]
-	except:
+        Combines the generated random file and the read ODF file.
+        Arguments
+        filename = 'example.cmb'
+        """
+        try:
+            self.data[0]
+        except:
             print('ODF does not exist. Please try odf_reading')
-	    return -1
-	else:
+            return -1
+        else:
             """
-	    temp  =[]
-	    temp_ =[]
-	    for i in range(3):
-	    temp.append(int(self.maxdata[i]))
-	    temp_.append(int(self.p1))
-	    temp_.append(int(self.p2))
-	    temp_.append(int(self.p3))
-	    """
-	    print(self.inc)
-	    e = self.euler
-	    data = []
-	    f = open(filename,'w')
-	    f.write('discretized grain file\n')
-	    f.write('dummy\n')
-	    f.write('dummy\n')
-	    f.write(self.nomenclature[0]+'   '+str(self.ngr)+'\n')            
-	    for i in range(len(e)):
+            temp  =[]
+            temp_ =[]
+            for i in range(3):
+            temp.append(int(self.maxdata[i]))
+            temp_.append(int(self.p1))
+            temp_.append(int(self.p2))
+            temp_.append(int(self.p3))
+            """
+            print(self.inc)
+            e = self.euler
+            data = []
+            f = open(filename,'w')
+            f.write('discretized grain file\n')
+            f.write('dummy\n')
+            f.write('dummy\n')
+            f.write(self.nomenclature[0]+'   '+str(self.ngr)+'\n')            
+            for i in range(len(e)):
                 phi1 = []
-		phi2 = []
-		phi  = []
-		down = []
-		up   = []
-		r    = [ [],[],[] ]
-		p    = [ [],[],[] ]
-		p[0] = e[i][1]  #phi1
-		p[1] = e[i][2]  #phi
-		p[2] = e[i][3]  #phi2
-		for j in range(3):
+                phi2 = []
+                phi  = []
+                down = []
+                up   = []
+                r    = [ [],[],[] ]
+                p    = [ [],[],[] ]
+                p[0] = e[i][1]  #phi1
+                p[1] = e[i][2]  #phi
+                p[2] = e[i][3]  #phi2
+                for j in range(3):
                     r[j].append(e[i][j+1] - e[i][j+1]%self.inc)
-		    r[j].append(e[i][j+1] - e[i][j+1]%
-                                self.inc + self.inc)
-		value = self.interpolate(p[0],p[2],p[1])
-		data.append(value)
-		f.write('%8.5f  '%(p[0]))       #phi1
-		f.write('%8.5f  '%(p[1]))       #phi
-		f.write('%8.5f  '%(p[2]))       #phi2
-		f.write('  %13.8e\n'%(data[i]))
+                    r[j].append(e[i][j+1] - e[i][j+1]%self.inc + self.inc)
+                value = self.interpolate(p[0],p[2],p[1])
+                data.append(value)
+                f.write('%8.5f  '%(p[0]))       #phi1
+                f.write('%8.5f  '%(p[1]))       #phi
+                f.write('%8.5f  '%(p[2]))       #phi2
+                f.write('  %13.8e\n'%(data[i]))
                 pass
             pass
-	pass
+        pass
         
     def interpolate(self,phi1=0,phi2=0,phi=0):
         """
@@ -294,25 +294,25 @@ class randomEuler:
         r=[ [],[],[] ]
         r[0].append(phi1 - phi1%self.inc)             #phi1
         r[0].append(phi1 - phi1%self.inc  +self.inc)
-	r[1].append(phi2 - phi2%self.inc)             #phi2
-	r[1].append(phi2 - phi2%self.inc  +self.inc)
-	r[2].append(phi  - phi %self.inc)             #phi
-	r[2].append(phi  - phi %self.inc  +self.inc)
-	value = 0
-	x,y,z = 0,0,0
-	for j in range(2):              #phi1
-	    for k in range(2):          #phi2
+        r[1].append(phi2 - phi2%self.inc)             #phi2
+        r[1].append(phi2 - phi2%self.inc  +self.inc)
+        r[2].append(phi  - phi %self.inc)             #phi
+        r[2].append(phi  - phi %self.inc  +self.inc)
+        value = 0
+        x,y,z = 0,0,0
+        for j in range(2):              #phi1
+            for k in range(2):          #phi2
                 for l in range(2):      #phi
                     x = self.inc - abs(phi1 - r[0][j])
                     y = self.inc - abs(phi2 - r[1][k])
-		    z = self.inc - abs(phi  - r[2][l])
-		    value = value + self.ODF(r[0][j],
-					     r[1][k],
-					     r[2][l])*x*y*z/(self.inc**3)
+                    z = self.inc - abs(phi  - r[2][l])
+                    value = value + self.ODF(r[0][j],
+                                             r[1][k],
+                                             r[2][l])*x*y*z/(self.inc**3)
                     pass
                 pass
             pass
-	return value
+        return value
 
 ##
 ## practical extensions of using the above class
@@ -332,16 +332,15 @@ def sampling(odf=None, p1=360., p2=90., *args):
     follow the below:
     >>> import randomEuler
     >>> randomEuler.sampling('304_surface.TXT', 500,1000,2000,4000,...)
-              . . .
     """
     from . import upf
     files = []
     print('p1=', p1, 'p2=', p2)
     for i in range(len(args)):
         re = randomEuler(ngrain=args[i], p1=p1, p2=p2)
-	re.odf_reading(odf)
+        re.odf_reading(odf)
         filename = "%s_%s%s"%(odf.split('.TXT')[0],str(args[i]).zfill(5),'.cmb')
-	re.combine(filename)   #"%s_%s%s"%(odf.split('.TXT')[0],str(args[i]).zfill(5),'.cmb'))
+        re.combine(filename)   #"%s_%s%s"%(odf.split('.TXT')[0],str(args[i]).zfill(5),'.cmb'))
         files.append(filename)
         pass
 
